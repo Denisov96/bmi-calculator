@@ -7,21 +7,29 @@
     <link rel="stylesheet" href="style2.css" />
   </head>
   <script>
-    const contacts = []
-    
+    const contacts = [];
+
     function saveInformation() {
       let fullName = document.getElementById("Name").value;
       let number = document.getElementById("Number").value;
       let email = document.getElementById("email").value;
-      let personalInfo =
-        "<br>Name: " +
-        fullName +
-        " <br>Number: " +
-        number +
-        " <br>Email: " +
-        email;
+
+      contacts.push({ fullName, number, email });
+    }
+
+    function renderContacts() {
+      let personalInfo = "";
+      for (let i = 0; i < contacts.length; i++) {
+        personalInfo += `<p>${contacts[i].fullName}<br>${contacts[i].number}<br>${contacts[i].email}</p>`;
+      }
       document.getElementById("personalInfo").innerHTML = personalInfo;
     }
+
+    function handleClick() {
+      saveInformation();
+      renderContacts();
+    }
+    
   </script>
   <body>
     <h1>Address Book</h1>
@@ -38,7 +46,7 @@
         <label for="email" class="label">Input your email:</label>
         <input id="email" placeholder="Input your email" type="email" />
       </div>
-      <button onclick="saveInformation()">Save information</button>
+      <button onclick="handleClick()">Save information</button>
       <p>Personal information: <span id="personalInfo"></span></p>
     </div>
   </body>
