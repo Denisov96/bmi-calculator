@@ -6,7 +6,30 @@
     <title>BMI Calculator</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-
+  <script>
+    function getBmi() {
+      const weight = document.getElementById(`weight`).value;
+      const convertWeight = parseFloat(weight);
+      const height = document.getElementById(`height`).value;
+      const convertHeight = parseFloat(height);
+      const bmi = convertWeight / convertHeight ** 2;
+      console.log(bmi);
+      document.getElementById(`result`).innerText = bmi.toFixed(1);
+      let bmiCategory;
+      if (bmi < 18.5) {
+        bmiCategory = "Underweight";
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        bmiCategory = "Healthy Weight";
+      } else if (bmi >= 25.0 && bmi <= 29.9) {
+        bmiCategory = "Overweight";
+      } else {
+        bmiCategory = "Obese";
+      }
+      document.getElementById(`result`).innerText = ` ${bmi.toFixed(
+        1
+      )}, which falls within the ${bmiCategory} range.`;
+    }
+  </script>
   <body>
     <div class="form">
       <div class="input-container">
@@ -14,13 +37,21 @@
         <input
           id="height"
           placeholder="Input your height"
-          type="number"
+          type="word"
           value="2"
         />
       </div>
-     
-      <button>Calculate BMI</button>
-      <p>Your BMI is: <span class="result"></span></p>
+      <div class="input-container">
+        <label for="height" class="label">Input your weight:</label>
+        <input
+          id="weight"
+          placeholder="Input your weight"
+          type="number"
+          value="30"
+        />
+      </div>
+      <button onclick="getBmi()">Calculate BMI</button>
+      <p>Your BMI: <span class="result" id="result" ></span></p>
     </div>
   </body>
 </html>
