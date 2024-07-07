@@ -3,51 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BMI Calculator</title>
+    <title>Address Book</title>
     <link rel="stylesheet" href="style2.css" />
   </head>
-  <script>
-    const contacts = [];
-
-    function saveInformation() {
-      let fullName = document.getElementById("Name").value;
-      let number = document.getElementById("Number").value;
-      let email = document.getElementById("email").value;
-
-      contacts.push({ fullName, number, email });
-    }
-
-    function renderContacts() {
-      let personalInfo = "";
-      for (let i = 0; i < contacts.length; i++) {
-        personalInfo += `<p>${contacts[i].fullName}<br>${contacts[i].number}<br>${contacts[i].email}</p>`;
-      }
-      document.getElementById("personalInfo").innerHTML = personalInfo;
-    }
-
-    function handleClick() {
-      saveInformation();
-      renderContacts();
-    }
-    
-  </script>
   <body>
     <h1>Address Book</h1>
     <div class="form">
       <div class="input-container">
-        <label for="Full Name" class="label">Input your full name:</label>
-        <input id="Name" placeholder="Input your full name" type="words" />
+        <label for="Name" class="label">Input your full name:</label>
+        <input id="Name" placeholder="Your full name" type="text" />
       </div>
       <div class="input-container">
         <label for="Number" class="label">Input your number:</label>
-        <input id="Number" placeholder="Input your number" type="number" />
+        <input id="Number" placeholder="Your number" type="number" />
       </div>
       <div class="input-container">
         <label for="email" class="label">Input your email:</label>
-        <input id="email" placeholder="Input your email" type="email" />
+        <input id="email" placeholder="Your email" type="email" />
       </div>
-      <button onclick="handleClick()">Save information</button>
+      <button onclick="handleClick()">Save</button>
+      <button id="clearButton" onclick="clearContacts()">
+        Clear information
+      </button>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search..."
+        oninput="searchContacts()"
+      />
+      <div class="sort-options">
+        <label for="sort">Sort by:</label>
+        <select id="sort" onchange="renderContacts()">
+          <option value="name">Name</option>
+          <option value="number">Number</option>
+        </select>
+      </div>
       <p>Personal information: <span id="personalInfo"></span></p>
     </div>
+
+    <script>
+      let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+      function saveInformation() {
+        let fullName = document.getElementById("Name").value;
+        let number = document.getElementById("Number").value;
+        let email = document.getElementById("email").value;
+
+        contacts.push({ fullName, number, email });
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+      }
+
+      function searchContacts() {
+        renderContacts();
+      }
+
+      function renderContacts() {
+        let search = document.getElementById("search").value.toLowerCase();
+        let sortOption = document.getElementById("sort").value;
+        let filteredContacts = contacts.filter(
+          (contact) =>
+            contact.fullName.toLowerCase().includes(search) ||
+            contact.number.includes(search) ||
+            contact.email.toLowerCase().includes(search)
+        );
+
+        if (sortOption === "name") {
+          filteredContacts.sort((a, b) => a.fullName.localeCompare(b.fullName));
+        } else if (sortOption === "number") {
+          filteredContacts.sort((a, b) => a.number.localeCompare(b.number));
+        }
+
+        let personalInfo = `<table><thead><tr><th>Full Name</th><th>Number</th><th>Email</th></tr></thead><tbody>`;
+        for (let contact of filteredContacts) {
+          personalInfo += `<tr><td>${contact.fullName}</td><td>${contact.number}</td><td>${contact.email}</td></tr>`;
+        }
+        personalInfo += `</tbody></table>`;
+        document.getElementById("personalInfo").innerHTML = personalInfo;
+      }
+
+      function handleClick() {
+        saveInformation();
+        renderContacts();
+      }
+
+      function clearContacts() {
+        contacts = [];
+        localStorage.removeItem("contacts");
+        renderContacts();
+      }
+
+      document.addEventListener("DOMContentLoaded", renderContacts);
+    </script>
   </body>
 </html>
