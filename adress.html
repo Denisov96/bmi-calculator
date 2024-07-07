@@ -25,6 +25,7 @@
       <button id="clearButton" onclick="clearContacts()">
         Clear information
       </button>
+      <button onclick="resetContacts()">Reset</button>
       <input
         id="search"
         type="search"
@@ -51,6 +52,8 @@
 
         contacts.push({ fullName, number, email });
         localStorage.setItem("contacts", JSON.stringify(contacts));
+
+        document.getElementById("Name").value = ``;
       }
 
       function searchContacts() {
@@ -90,6 +93,11 @@
         contacts = [];
         localStorage.removeItem("contacts");
         renderContacts();
+      }
+      async function resetContacts() {
+        const response = await fetch(`defultContacts.json`);
+        contacts = await response.json();
+        renderContacts()
       }
 
       document.addEventListener("DOMContentLoaded", renderContacts);
