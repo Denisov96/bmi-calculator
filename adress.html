@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style2.css" />
   </head>
   <body>
-    <h1>Address Book</h1>
+    <h1>😊Address Book😊</h1>
     <div class="form">
       <div class="input-container">
         <label for="Name" class="label">Input your full name:</label>
@@ -21,11 +21,11 @@
         <label for="email" class="label">Input your email:</label>
         <input id="email" placeholder="Your email" type="email" />
       </div>
-      <button onclick="handleClick()">Save</button>
+      <button id="saveButton" onclick="handleClick()">Save</button>
       <button id="clearButton" onclick="clearContacts()">
-        Clear information
+        Clear 
       </button>
-      <button onclick="resetContacts()">Reset</button>
+      <button id="resetButton" onclick="resetContacts()">Reset</button>
       <input
         id="search"
         type="search"
@@ -97,7 +97,7 @@
       async function resetContacts() {
         const response = await fetch(`defultContacts.json`);
         contacts = await response.json();
-        renderContacts()
+        renderContacts();
       }
 
       document.addEventListener("DOMContentLoaded", renderContacts);
